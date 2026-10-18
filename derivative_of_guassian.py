@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from convolution import convolve2D_separable, gaussian_kernel
 from utils import load_image
 
-IMAGE_DIR = "/home/heba/grad_project/cv_practice/labs/lab1/starter_pack/images/part1_filters/"
+IMAGE_DIR = "D:/Documents/Fall 26/Computer Vision/Asg/Asg1/starter_pack/images/part1_filters/"
 im = load_image(f"{IMAGE_DIR}/cameraman.png", gray=True)
 
 #build the Gaussian kernel

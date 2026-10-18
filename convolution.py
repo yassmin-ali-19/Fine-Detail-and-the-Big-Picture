@@ -83,39 +83,49 @@ def is_separable(kernel, tol=1e-10):
         return False, None, None
 
 
-def convolve1D(image, vec, axis):
+def convolve1D(image, vec, axis, mode = "zero"):
 
     k = vec.shape[0]
     pad = k // 2
     vec_flipped = vec[::-1]
+    H, W = image.shape
 
-    if axis == 0:
-        H, W = image.shape
-        imagePadded = np.zeros((H + 2 * pad, W))
-        imagePadded[pad:pad + H, :] = image
+    if mode == "zero":
+        if axis == 0:
+            imagePadded = np.zeros((H + 2 * pad, W))
+            imagePadded[pad:pad + H, :] = image
+            output = np.zeros((H, W))
+            for a in range(k):
+                output += vec_flipped[a] * imagePadded[a:a + H, :]
+        else:  # axis == 1
+            imagePadded = np.zeros((H, W + 2 * pad))
+            imagePadded[:, pad:pad + W] = image
+            output = np.zeros((H, W))
+            for b in range(k):
+                output += vec_flipped[b] * imagePadded[:, b:b + W]
+    else:
+        if axis == 0:
+            pad_width = ((pad, pad), (0, 0))
+        else:
+            pad_width = ((0, 0), (pad, pad))
+        imagePadded = np.pad(image, pad_width, mode=mode)
         output = np.zeros((H, W))
         for a in range(k):
-            output += vec_flipped[a] * imagePadded[a:a + H, :]
-    else:  # axis == 1
-        H, W = image.shape
-        imagePadded = np.zeros((H, W + 2 * pad))
-        imagePadded[:, pad:pad + W] = image
-        output = np.zeros((H, W))
-        for b in range(k):
-            output += vec_flipped[b] * imagePadded[:, b:b + W]
+            if axis == 0:
+                output += vec_flipped[a] * imagePadded[a:a + H, :]
+            else:
+                output += vec_flipped[a] * imagePadded[:, a:a + W]
     return output
 
 
-def convolve2D_separable(image, kernel):
+def convolve2D_separable(image, kernel, mode="zero"):
 
     sep, col, row = is_separable(kernel)
     if not sep:
         return convole2D_vectorized(image, kernel)
-    out = convolve1D(image, col, axis=0)   
-    out = convolve1D(out, row, axis=1)     
+    out = convolve1D(image, col, axis=0, mode = mode)   
+    out = convolve1D(out, row, axis=1, mode = mode)     
     return out
-
-
 
 
 #_______timing the functions using guassian with different sizes_________
