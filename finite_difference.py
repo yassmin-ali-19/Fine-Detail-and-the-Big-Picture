@@ -31,39 +31,40 @@ def zero_centered(im, clip=None):
     m = m if m > 0 else 1.0
     return np.clip(im / (2 * m) + 0.5, 0, 1)
 
-dIdx, dIdy, magnitude, edges, threshold = compute_edges(im, k=2.0)
+def main():
+    dIdx, dIdy, magnitude, edges, threshold = compute_edges(im, k=2.0)
 
-print(f"magnitude: min={magnitude.min():.3f} max={magnitude.max():.3f} "
-      f"mean={magnitude.mean():.3f} std={magnitude.std():.3f}")
-print(f"chosen threshold = {threshold:.4f}  "
-      f"-> {edges.mean()*100:.2f}% of pixels marked as edges")
+    print(f"magnitude: min={magnitude.min():.3f} max={magnitude.max():.3f} "
+        f"mean={magnitude.mean():.3f} std={magnitude.std():.3f}")
+    print(f"chosen threshold = {threshold:.4f}  "
+        f"-> {edges.mean()*100:.2f}% of pixels marked as edges")
 
-#show the four maps (+ a zoomed corner of the edges)
-fig, axs = plt.subplots(1, 5, figsize=(20, 4))
+    #show the four maps (+ a zoomed corner of the edges)
+    fig, axs = plt.subplots(1, 5, figsize=(20, 4))
 
-axs[0].imshow(zero_centered(dIdx), cmap="gray")
-axs[0].set_title(r"$\partial I/\partial x$")
+    axs[0].imshow(zero_centered(dIdx), cmap="gray")
+    axs[0].set_title(r"$\partial I/\partial x$")
 
-axs[1].imshow(zero_centered(dIdy), cmap="gray")
-axs[1].set_title(r"$\partial I/\partial y$")
+    axs[1].imshow(zero_centered(dIdy), cmap="gray")
+    axs[1].set_title(r"$\partial I/\partial y$")
 
-axs[2].imshow(magnitude, cmap="gray")
-axs[2].set_title("Gradient magnitude")
+    axs[2].imshow(magnitude, cmap="gray")
+    axs[2].set_title("Gradient magnitude")
 
-axs[3].imshow(edges, cmap="gray")
-axs[3].set_title(f"Edges (t={threshold:.3f})")
+    axs[3].imshow(edges, cmap="gray")
+    axs[3].set_title(f"Edges (t={threshold:.3f})")
 
-crop = 20  # pixels to zoom on small one line oixel edges
-axs[4].imshow(edges[:crop, :crop], cmap="gray", interpolation="nearest")  #use interpolation here to not blend into zeros when stretched
-axs[4].set_xticks(np.arange(-.5, crop, 1), minor=True)
-axs[4].set_yticks(np.arange(-.5, crop, 1), minor=True)
-axs[4].grid(which="minor", color="red", linewidth=0.3)
-axs[4].set_xticks([]); axs[4].set_yticks([])
-axs[4].set_title("Edges, corner enlarged")
+    crop = 20  # pixels to zoom on small one line oixel edges
+    axs[4].imshow(edges[:crop, :crop], cmap="gray", interpolation="nearest")  #use interpolation here to not blend into zeros when stretched
+    axs[4].set_xticks(np.arange(-.5, crop, 1), minor=True)
+    axs[4].set_yticks(np.arange(-.5, crop, 1), minor=True)
+    axs[4].grid(which="minor", color="red", linewidth=0.3)
+    axs[4].set_xticks([]); axs[4].set_yticks([])
+    axs[4].set_title("Edges, corner enlarged")
 
-for ax in axs[:4]:
-    ax.axis("off")
+    for ax in axs[:4]:
+        ax.axis("off")
 
-plt.tight_layout()
-plt.savefig("part1_2_maps.png", dpi=150)
-print("saved part1_2_maps.png")
+    plt.tight_layout()
+    plt.savefig("part1_2_maps.png", dpi=150)
+    print("saved part1_2_maps.png")
