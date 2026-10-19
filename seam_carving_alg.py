@@ -142,39 +142,40 @@ def test_failing_example():
     plt.savefig(f"part3_mine_{name.split('.')[0]}.png", dpi=150)
     plt.close(fig)
 
-names1 = ["broadway_tower.png", "home.jpg", "rocket.jpg", "starry_night.jpg"]
-names2 = ["pic1.jpg", "pic2.jpg", "pic3.jpg"]
+def main():
+    names1 = ["broadway_tower.png", "home.jpg", "rocket.jpg", "starry_night.jpg"]
+    names2 = ["pic1.jpg", "pic2.jpg", "pic3.jpg"]
 
-for name in names1:
-    im = load_image(f"{IMAGE_DIR1}/{name}")       
-    carved, seams = carve_vertical(im, num_seams=0, mode="dog")
-    with_seams = draw_seams(im, seams)
+    for name in names1:
+        im = load_image(f"{IMAGE_DIR1}/{name}")       
+        carved, seams = carve_vertical(im, num_seams=0, mode="dog")
+        with_seams = draw_seams(im, seams)
 
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-    axs[0].imshow(im);         axs[0].set_title("Original")
-    axs[1].imshow(with_seams); axs[1].set_title(f"{len(seams)} seams")
-    axs[2].imshow(carved);     axs[2].set_title(f"Carved ({carved.shape[1]} cols)")
-    for ax in axs:
-        ax.axis("off")
-    plt.tight_layout()
-    plt.savefig(f"part3_seams_{name.split('.')[0]}.png", dpi=150)
-    plt.close(fig)
-    compare(im, name.split('.')[0])
+        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+        axs[0].imshow(im);         axs[0].set_title("Original")
+        axs[1].imshow(with_seams); axs[1].set_title(f"{len(seams)} seams")
+        axs[2].imshow(carved);     axs[2].set_title(f"Carved ({carved.shape[1]} cols)")
+        for ax in axs:
+            ax.axis("off")
+        plt.tight_layout()
+        plt.savefig(f"part3_seams_{name.split('.')[0]}.png", dpi=150)
+        plt.close(fig)
+        compare(im, name.split('.')[0])
 
-for name in names2:
-    im = load_image(f"{IMAGE_DIR2}/{name}")       
-    carved, seams = carve_vertical(im, num_seams=0, mode="dog")
-    with_seams = draw_seams(im, seams)
+    for name in names2:
+        im = load_image(f"{IMAGE_DIR2}/{name}")       
+        carved, seams = carve_vertical(im, num_seams=0, mode="dog")
+        with_seams = draw_seams(im, seams)
 
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
-    axs[0].imshow(im);         axs[0].set_title("Original")
-    axs[1].imshow(with_seams); axs[1].set_title(f"{len(seams)} seams")
-    axs[2].imshow(carved);     axs[2].set_title(f"Carved ({carved.shape[1]} cols)")
-    for ax in axs:
-        ax.axis("off")
-    plt.tight_layout()
-    plt.savefig(f"part3_mine_{name.split('.')[0]}.png", dpi=150)
-    plt.close(fig)
-    compare(im, name.split('.')[0])
+        fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+        axs[0].imshow(im);         axs[0].set_title("Original")
+        axs[1].imshow(with_seams); axs[1].set_title(f"{len(seams)} seams")
+        axs[2].imshow(carved);     axs[2].set_title(f"Carved ({carved.shape[1]} cols)")
+        for ax in axs:
+            ax.axis("off")
+        plt.tight_layout()
+        plt.savefig(f"part3_mine_{name.split('.')[0]}.png", dpi=150)
+        plt.close(fig)
+        compare(im, name.split('.')[0])
 
-test_failing_example()
+    test_failing_example()
